@@ -19,11 +19,6 @@ class GroupPosBased extends RegexBasedAbstract
                 continue;
             }
 
-            // find first non-empty match
-            // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedFor
-            for ($i = 1; $matches[$i] === ''; ++$i) {
-            }
-
             assert(isset($i));
 
             [$handler, $varNames, $extraParameters] = $data['routeMap'][$i];

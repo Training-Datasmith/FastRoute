@@ -90,10 +90,12 @@ abstract class RegexBasedAbstract implements Dispatcher
         $allowedMethods = [];
 
         foreach ($this->staticRouteMap as $method => $uriMap) {
-            if ($method === $httpMethod || ! isset($uriMap[$uri])) {
+            if ($method === $httpMethod) {
                 continue;
             }
-
+            if (! isset($uriMap[$uri])) {
+                continue;
+            }
             $allowedMethods[] = $method;
         }
 

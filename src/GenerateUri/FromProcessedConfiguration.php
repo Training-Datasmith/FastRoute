@@ -65,10 +65,12 @@ final class FromProcessedConfiguration implements GenerateUri
         $missingParameters = [];
 
         foreach ($parts as $part) {
-            if (is_string($part) || array_key_exists($part[0], $substitutions)) {
+            if (is_string($part)) {
                 continue;
             }
-
+            if (array_key_exists($part[0], $substitutions)) {
+                continue;
+            }
             $missingParameters[] = $part[0];
         }
 
