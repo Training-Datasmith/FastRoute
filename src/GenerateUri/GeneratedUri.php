@@ -1,13 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\GenerateUri;
 
 use FastRoute\GenerateUri;
-use Psr\Http\Message\UriInterface;
-use Stringable;
 
 use function http_build_query;
+
+use Psr\Http\Message\UriInterface;
+
+use Stringable;
 
 /** @phpstan-import-type UriSubstitutions from GenerateUri */
 final class GeneratedUri implements Stringable

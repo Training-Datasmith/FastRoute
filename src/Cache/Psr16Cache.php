@@ -1,12 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\Cache;
 
 use FastRoute\Cache;
-use Psr\SimpleCache\CacheInterface;
 
 use function is_array;
+
+use Psr\SimpleCache\CacheInterface;
 
 final class Psr16Cache implements Cache
 {

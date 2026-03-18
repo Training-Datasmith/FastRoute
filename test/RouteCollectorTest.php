@@ -1,19 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\Test;
+
+use function assert;
+use function count;
 
 use FastRoute\BadRouteException;
 use FastRoute\ConfigureRoutes;
 use FastRoute\DataGenerator;
 use FastRoute\RouteCollector;
 use FastRoute\RouteParser\Std;
+
+use function is_string;
+
 use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
-
-use function assert;
-use function count;
-use function is_string;
 
 final class RouteCollectorTest extends TestCase
 {
@@ -160,8 +163,7 @@ final class RouteCollectorTest extends TestCase
 
     private static function dummyDataGenerator(): DataGenerator
     {
-        return new class implements DataGenerator
-        {
+        return new class () implements DataGenerator {
             /** @var list<array{string, string, mixed, array<string, bool|float|int|string>}> */
             public array $routes = [];
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\Benchmark;
@@ -6,9 +7,10 @@ namespace FastRoute\Benchmark;
 use FastRoute\ConfigureRoutes;
 use FastRoute\DataGenerator;
 use FastRoute\Dispatcher;
-use RuntimeException;
 
 use function FastRoute\simpleDispatcher;
+
+use RuntimeException;
 
 /** @phpstan-type DispatcherOptions array{dataGenerator: class-string<DataGenerator>, dispatcher: class-string<Dispatcher>} */
 final class DispatcherForBenchmark

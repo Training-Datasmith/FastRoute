@@ -1,13 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute;
 
 use FastRoute\Cache\FileCache;
-use LogicException;
 
 use function function_exists;
+
 use function is_string;
+
+use LogicException;
 
 if (! function_exists('FastRoute\simpleDispatcher')) {
     /**

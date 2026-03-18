@@ -1,13 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\GenerateUri;
 
+use function count;
+
 use FastRoute\Exception;
+
+use function implode;
+
 use LogicException;
 
-use function count;
-use function implode;
 use function sprintf;
 
 final class UriCouldNotBeGenerated extends LogicException implements Exception

@@ -1,14 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\Test\Dispatcher;
 
+use function FastRoute\cachedDispatcher;
+
 use FastRoute\ConfigureRoutes;
 use FastRoute\Dispatcher;
 use PHPUnit\Framework\Attributes as PHPUnit;
+
 use PHPUnit\Framework\TestCase;
 
-use function FastRoute\cachedDispatcher;
 use function unlink;
 
 final class CachingTest extends TestCase

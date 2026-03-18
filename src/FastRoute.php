@@ -1,12 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute;
 
+use function assert;
+
 use Closure;
+
 use FastRoute\Cache\FileCache;
 
-use function assert;
 use function is_string;
 
 /** @phpstan-import-type ProcessedData from ConfigureRoutes */

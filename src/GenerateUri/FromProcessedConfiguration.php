@@ -1,15 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\GenerateUri;
 
+use function array_key_exists;
+use function array_keys;
+
+use function assert;
+use function count;
+
 use FastRoute\GenerateUri;
 use FastRoute\RouteParser;
 
-use function array_key_exists;
-use function array_keys;
-use function assert;
-use function count;
 use function is_string;
 use function preg_match;
 

@@ -1,18 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\DataGenerator;
+
+use function array_chunk;
+use function array_map;
+use function assert;
+use function ceil;
+
+use function count;
 
 use FastRoute\BadRouteException;
 use FastRoute\DataGenerator;
 use FastRoute\Route;
 use FastRoute\RouteParser;
 
-use function array_chunk;
-use function array_map;
-use function assert;
-use function ceil;
-use function count;
 use function is_string;
 use function max;
 use function round;

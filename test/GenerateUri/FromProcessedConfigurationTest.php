@@ -1,16 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\Test\GenerateUri;
 
+use function array_map;
+use function array_reverse;
+
 use FastRoute\GenerateUri;
 use FastRoute\RouteParser;
 use Nyholm\Psr7\Uri;
+
 use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
-
-use function array_map;
-use function array_reverse;
 
 /** @phpstan-import-type ParsedRoutes from RouteParser */
 final class FromProcessedConfigurationTest extends TestCase

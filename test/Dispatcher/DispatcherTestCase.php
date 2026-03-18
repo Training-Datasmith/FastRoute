@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\Test\Dispatcher;
@@ -11,10 +12,12 @@ use FastRoute\Dispatcher;
 use FastRoute\Dispatcher\Result\Matched;
 use FastRoute\Dispatcher\Result\MethodNotAllowed;
 use FastRoute\Dispatcher\Result\NotMatched;
-use PHPUnit\Framework\Attributes as PHPUnit;
-use PHPUnit\Framework\TestCase;
 
 use function FastRoute\simpleDispatcher;
+
+use PHPUnit\Framework\Attributes as PHPUnit;
+
+use PHPUnit\Framework\TestCase;
 
 /** @phpstan-import-type ExtraParameters from DataGenerator */
 abstract class DispatcherTestCase extends TestCase

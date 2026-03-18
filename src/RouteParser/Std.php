@@ -1,26 +1,30 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\RouteParser;
 
+use function assert;
+use function count;
+
 use FastRoute\BadRouteException;
 use FastRoute\RouteParser;
 
-use function assert;
-use function count;
 use function in_array;
 use function is_array;
 use function preg_match;
 use function preg_match_all;
+
+use const PREG_OFFSET_CAPTURE;
+use const PREG_SET_ORDER;
+
 use function preg_split;
 use function rtrim;
 use function str_contains;
 use function strlen;
+
 use function substr;
 use function trim;
-
-use const PREG_OFFSET_CAPTURE;
-use const PREG_SET_ORDER;
 
 /**
  * Parses route strings of the following form:

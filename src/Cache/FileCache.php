@@ -1,27 +1,36 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\Cache;
 
-use Closure;
-use FastRoute\Cache;
-use FastRoute\ConfigureRoutes;
-use RuntimeException;
-
 use function chmod;
+
+use Closure;
+
 use function dirname;
+
+use FastRoute\Cache;
+
+use FastRoute\ConfigureRoutes;
+
 use function file_put_contents;
 use function is_array;
 use function is_dir;
 use function is_writable;
+
+use const LOCK_EX;
+
 use function mkdir;
 use function rename;
 use function restore_error_handler;
+
+use RuntimeException;
+
 use function set_error_handler;
 use function unlink;
-use function var_export;
 
-use const LOCK_EX;
+use function var_export;
 
 /** @phpstan-import-type ProcessedData from ConfigureRoutes */
 final class FileCache implements Cache

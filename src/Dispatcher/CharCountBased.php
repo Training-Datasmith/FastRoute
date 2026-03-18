@@ -1,12 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace FastRoute\Dispatcher;
 
+use function assert;
+
+use function end;
+
 use FastRoute\Dispatcher\Result\Matched;
 
-use function assert;
-use function end;
 use function preg_match;
 
 /** @final */
