@@ -30,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "FastRoute\\": "src/"
+            "Fast_Route\\": "src/"
         },
         "files": [
             "src/functions.php"
@@ -38,8 +38,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "FastRoute\\Benchmark\\": "benchmark/",
-            "FastRoute\\Test\\": "test/"
+            "Fast_Route\\Benchmark\\": "benchmark/",
+            "Fast_Route\\Test\\": "test/"
         }
     },
     "config": {
