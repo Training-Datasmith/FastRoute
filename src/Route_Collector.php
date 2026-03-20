@@ -102,14 +102,21 @@ class Route_Collector implements Configure_Routes
         return $data;
     }
     /**
-     * @deprecated
+     * Returns the compiled route data used by a Dispatcher.
      *
-     * @see ConfigureRoutes::processedRoutes()
+     * @deprecated since FastRoute 2.0 — Use {@see Configure_Routes::processed_routes()} instead.
+     *
+     * @see Configure_Routes::processed_routes()
      *
      * @return ProcessedData
      */
     public function get_data(): array
     {
+        trigger_error(
+            'Route_Collector::get_data() is deprecated. Use processed_routes() instead.',
+            \E_USER_DEPRECATED
+        );
+
         return $this->processed_routes();
     }
 }

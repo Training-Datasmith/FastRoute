@@ -18,8 +18,12 @@ class Route
     /** @var array<string, string> $variables */
     public readonly array $variables;
     /**
-     * @param ParsedRoute     $routeData
-     * @param ExtraParameters $extraParameters
+     * Constructs an immutable Route value object from a parsed route definition.
+     *
+     * @param string          $http_method       The HTTP verb (e.g. 'GET', 'POST', '*' for any).
+     * @param ParsedRoute     $route_data        The token array produced by {@see Route_Parser::parse()}.
+     * @param mixed           $handler           The handler associated with this route (callable, controller string, etc.).
+     * @param ExtraParameters $extra_parameters  Named extra data stored alongside the route (e.g. route name, regex).
      */
     public function __construct(public readonly string $http_method, array $route_data, public readonly mixed $handler, public readonly array $extra_parameters)
     {
@@ -46,7 +50,13 @@ class Route
         return [$regex, $variables];
     }
     /**
-     * Tests whether this route matches the given string.
+     * Tests whether this route's compiled regex matches the given URI string.
+     *
+     * @param string $str The URI path segment to match against (without query string).
+     *
+     * @return bool `true` if the full URI matches the route pattern.
+     *
+     * @complexity O(n) where n = length of $str (single preg_match call)
      */
     public function matches(string $str): bool
     {
