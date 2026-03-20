@@ -1,25 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
-namespace FastRoute\DataGenerator;
+declare (strict_types=1);
+namespace Fast_Route\Data_Generator;
 
 use function array_chunk;
 use function array_map;
 use function assert;
 use function ceil;
-
 use function count;
-
-use FastRoute\BadRouteException;
-use FastRoute\DataGenerator;
-use FastRoute\Route;
-use FastRoute\RouteParser;
-
+use Fast_Route\Bad_Route_Exception;
+use Fast_Route\Data_Generator;
+use Fast_Route\Route;
+use Fast_Route\Route_Parser;
 use function is_string;
 use function max;
 use function round;
-
 /**
  * @internal
  *
@@ -30,109 +25,91 @@ use function round;
  * @phpstan-import-type ExtraParameters from DataGenerator
  * @phpstan-import-type ParsedRoute from RouteParser
  */
-abstract class RegexBasedAbstract implements DataGenerator
+abstract class Regex_Based_Abstract implements Data_Generator
 {
     /** @var StaticRoutes */
-    protected array $staticRoutes = [];
-
+    protected array $static_routes = [];
     /** @var array<string, array<string, Route>> */
-    protected array $methodToRegexToRoutesMap = [];
-
-    abstract protected function getApproxChunkSize(): int;
-
+    protected array $method_to_regex_to_routes_map = [];
+    abstract protected function get_approx_chunk_size(): int;
     /**
      * @param array<string, Route> $regexToRoutesMap
      *
      * @return DynamicRouteChunk
      */
-    abstract protected function processChunk(array $regexToRoutesMap): array;
-
+    abstract protected function process_chunk(array $regex_to_routes_map): array;
     /** @inheritDoc */
-    public function addRoute(string $httpMethod, array $routeData, mixed $handler, array $extraParameters = []): void
+    public function add_route(string $http_method, array $route_data, mixed $handler, array $extra_parameters = []): void
     {
-        if ($this->isStaticRoute($routeData)) {
-            $this->addStaticRoute($httpMethod, $routeData, $handler, $extraParameters);
+        if ($this->is_static_route($route_data)) {
+            $this->add_static_route($http_method, $route_data, $handler, $extra_parameters);
         } else {
-            $this->addVariableRoute($httpMethod, $routeData, $handler, $extraParameters);
+            $this->add_variable_route($http_method, $route_data, $handler, $extra_parameters);
         }
     }
-
     /** @inheritDoc */
-    public function getData(): array
+    public function get_data(): array
     {
-        if ($this->methodToRegexToRoutesMap === []) {
-            return [$this->staticRoutes, []];
+        if ($this->method_to_regex_to_routes_map === []) {
+            return [$this->static_routes, []];
         }
-
-        return [$this->staticRoutes, $this->generateVariableRouteData()];
+        return [$this->static_routes, $this->generate_variable_route_data()];
     }
-
     /** @return DynamicRoutes */
-    private function generateVariableRouteData(): array
+    private function generate_variable_route_data(): array
     {
         $data = [];
-        foreach ($this->methodToRegexToRoutesMap as $method => $regexToRoutesMap) {
-            $chunkSize = $this->computeChunkSize(count($regexToRoutesMap));
-            $chunks = array_chunk($regexToRoutesMap, $chunkSize, true);
-            $data[$method] = array_map($this->processChunk(...), $chunks);
+        foreach ($this->method_to_regex_to_routes_map as $method => $regex_to_routes_map) {
+            $chunk_size = $this->compute_chunk_size(count($regex_to_routes_map));
+            $chunks = array_chunk($regex_to_routes_map, $chunk_size, true);
+            $data[$method] = array_map($this->process_chunk(...), $chunks);
         }
-
         return $data;
     }
-
     /** @return positive-int */
-    private function computeChunkSize(int $count): int
+    private function compute_chunk_size(int $count): int
     {
-        $numParts = max(1, round($count / $this->getApproxChunkSize()));
-        $size = (int) ceil($count / $numParts);
+        $num_parts = max(1, round($count / $this->get_approx_chunk_size()));
+        $size = (int) ceil($count / $num_parts);
         assert($size > 0);
-
         return $size;
     }
-
     /** @param ParsedRoute $routeData */
-    private function isStaticRoute(array $routeData): bool
+    private function is_static_route(array $route_data): bool
     {
-        return count($routeData) === 1 && is_string($routeData[0]);
+        return count($route_data) === 1 && is_string($route_data[0]);
     }
-
     /**
      * @param ParsedRoute     $routeData
      * @param ExtraParameters $extraParameters
      */
-    private function addStaticRoute(string $httpMethod, array $routeData, mixed $handler, array $extraParameters): void
+    private function add_static_route(string $http_method, array $route_data, mixed $handler, array $extra_parameters): void
     {
-        $routeStr = $routeData[0];
-        assert(is_string($routeStr));
-
-        if (isset($this->staticRoutes[$httpMethod][$routeStr])) {
-            throw BadRouteException::alreadyRegistered($routeStr, $httpMethod);
+        $route_str = $route_data[0];
+        assert(is_string($route_str));
+        if (isset($this->static_routes[$http_method][$route_str])) {
+            throw Bad_Route_Exception::already_registered($route_str, $http_method);
         }
-
-        if (isset($this->methodToRegexToRoutesMap[$httpMethod])) {
-            foreach ($this->methodToRegexToRoutesMap[$httpMethod] as $route) {
-                if ($route->matches($routeStr)) {
-                    throw BadRouteException::shadowedByVariableRoute($routeStr, $route->regex, $httpMethod);
+        if (isset($this->method_to_regex_to_routes_map[$http_method])) {
+            foreach ($this->method_to_regex_to_routes_map[$http_method] as $route) {
+                if ($route->matches($route_str)) {
+                    throw Bad_Route_Exception::shadowed_by_variable_route($route_str, $route->regex, $http_method);
                 }
             }
         }
-
-        $this->staticRoutes[$httpMethod][$routeStr] = [$handler, $extraParameters];
+        $this->static_routes[$http_method][$route_str] = [$handler, $extra_parameters];
     }
-
     /**
      * @param ParsedRoute     $routeData
      * @param ExtraParameters $extraParameters
      */
-    private function addVariableRoute(string $httpMethod, array $routeData, mixed $handler, array $extraParameters): void
+    private function add_variable_route(string $http_method, array $route_data, mixed $handler, array $extra_parameters): void
     {
-        $route = new Route($httpMethod, $routeData, $handler, $extraParameters);
+        $route = new Route($http_method, $route_data, $handler, $extra_parameters);
         $regex = $route->regex;
-
-        if (isset($this->methodToRegexToRoutesMap[$httpMethod][$regex])) {
-            throw BadRouteException::alreadyRegistered($regex, $httpMethod);
+        if (isset($this->method_to_regex_to_routes_map[$http_method][$regex])) {
+            throw Bad_Route_Exception::already_registered($regex, $http_method);
         }
-
-        $this->methodToRegexToRoutesMap[$httpMethod][$regex] = $route;
+        $this->method_to_regex_to_routes_map[$http_method][$regex] = $route;
     }
 }

@@ -1,43 +1,33 @@
 <?php
 
-declare(strict_types=1);
-
-namespace FastRoute\Dispatcher;
+declare (strict_types=1);
+namespace Fast_Route\Dispatcher;
 
 use function assert;
-
-use FastRoute\Dispatcher\Result\Matched;
-
+use Fast_Route\Dispatcher\Result\Matched;
 use function preg_match;
-
 /** @final */
-class GroupPosBased extends RegexBasedAbstract
+class Group_Pos_Based extends Regex_Based_Abstract
 {
     /** @inheritDoc */
-    protected function dispatchVariableRoute(array $routeData, string $uri): ?Matched
+    protected function dispatch_variable_route(array $route_data, string $uri): ?Matched
     {
-        foreach ($routeData as $data) {
+        foreach ($route_data as $data) {
             if (preg_match($data['regex'], $uri, $matches) !== 1) {
                 continue;
             }
-
             assert(isset($i));
-
-            [$handler, $varNames, $extraParameters] = $data['routeMap'][$i];
-
+            [$handler, $var_names, $extra_parameters] = $data['routeMap'][$i];
             $vars = [];
-            foreach ($varNames as $varName) {
-                $vars[$varName] = $matches[$i++];
+            foreach ($var_names as $var_name) {
+                $vars[$var_name] = $matches[$i++];
             }
-
             $result = new Matched();
             $result->handler = $handler;
             $result->variables = $vars;
-            $result->extraParameters = $extraParameters;
-
+            $result->extra_parameters = $extra_parameters;
             return $result;
         }
-
         return null;
     }
 }

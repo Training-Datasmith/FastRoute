@@ -1,51 +1,36 @@
 <?php
 
-declare(strict_types=1);
-
-namespace FastRoute;
+declare (strict_types=1);
+namespace Fast_Route;
 
 use LogicException;
-
 use function sprintf;
 use function var_export;
-
 /** @final */
-class BadRouteException extends LogicException implements Exception
+class Bad_Route_Exception extends LogicException implements Exception
 {
-    public static function alreadyRegistered(string $route, string $method): self
+    public static function already_registered(string $route, string $method): self
     {
         return new self(sprintf('Cannot register two routes matching "%s" for method "%s"', $route, $method));
     }
-
-    public static function namedRouteAlreadyDefined(string $name): self
+    public static function named_route_already_defined(string $name): self
     {
         return new self(sprintf('Cannot register two routes under the name "%s"', $name));
     }
-
-    public static function invalidRouteName(mixed $name): self
+    public static function invalid_route_name(mixed $name): self
     {
         return new self(sprintf('Route name must be a non-empty string, "%s" given', var_export($name, true)));
     }
-
-    public static function shadowedByVariableRoute(string $route, string $shadowedRegex, string $method): self
+    public static function shadowed_by_variable_route(string $route, string $shadowed_regex, string $method): self
     {
-        return new self(
-            sprintf(
-                'Static route "%s" is shadowed by previously defined variable route "%s" for method "%s"',
-                $route,
-                $shadowedRegex,
-                $method,
-            ),
-        );
+        return new self(sprintf('Static route "%s" is shadowed by previously defined variable route "%s" for method "%s"', $route, $shadowed_regex, $method));
     }
-
-    public static function placeholderAlreadyDefined(string $name): self
+    public static function placeholder_already_defined(string $name): self
     {
         return new self(sprintf('Cannot use the same placeholder "%s" twice', $name));
     }
-
-    public static function variableWithCaptureGroup(string $regexPart, string $name): self
+    public static function variable_with_capture_group(string $regex_part, string $name): self
     {
-        return new self(sprintf('Regex "%s" for parameter "%s" contains a capturing group', $regexPart, $name));
+        return new self(sprintf('Regex "%s" for parameter "%s" contains a capturing group', $regex_part, $name));
     }
 }

@@ -1,8 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
-namespace FastRoute;
+declare (strict_types=1);
+namespace Fast_Route;
 
 /**
  * @phpstan-import-type ParsedRoute from RouteParser
@@ -13,7 +12,7 @@ namespace FastRoute;
  * @phpstan-type DynamicRoutes array<string, DynamicRouteChunks>
  * @phpstan-type RouteData array{StaticRoutes, DynamicRoutes}
  */
-interface DataGenerator
+interface Data_Generator
 {
     /**
      * Adds a route to the data generator. The route data uses the
@@ -26,13 +25,12 @@ interface DataGenerator
      * @param ParsedRoute     $routeData
      * @param ExtraParameters $extraParameters
      */
-    public function addRoute(string $httpMethod, array $routeData, mixed $handler, array $extraParameters = []): void;
-
+    public function add_route(string $http_method, array $route_data, mixed $handler, array $extra_parameters = []): void;
     /**
      * Returns dispatcher data in some unspecified format, which
      * depends on the used method of dispatch.
      *
      * @return RouteData
      */
-    public function getData(): array;
+    public function get_data(): array;
 }

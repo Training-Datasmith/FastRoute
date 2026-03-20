@@ -1,19 +1,16 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Fast_Route;
 
-namespace FastRoute;
-
-use FastRoute\Dispatcher\Result\Matched;
-use FastRoute\Dispatcher\Result\MethodNotAllowed;
-use FastRoute\Dispatcher\Result\NotMatched;
-
+use Fast_Route\Dispatcher\Result\Matched;
+use Fast_Route\Dispatcher\Result\Method_Not_Allowed;
+use Fast_Route\Dispatcher\Result\Not_Matched;
 interface Dispatcher
 {
     public const NOT_FOUND = 0;
     public const FOUND = 1;
     public const METHOD_NOT_ALLOWED = 2;
-
     /**
      * Dispatches against the provided HTTP method verb and URI.
      *
@@ -23,5 +20,5 @@ interface Dispatcher
      *     [self::METHOD_NOT_ALLOWED, ['GET', 'OTHER_ALLOWED_METHODS']]
      *     [self::FOUND, $handler, ['varName' => 'value', ...]]
      */
-    public function dispatch(string $httpMethod, string $uri): Matched|NotMatched|MethodNotAllowed;
+    public function dispatch(string $http_method, string $uri): Matched|Not_Matched|Method_Not_Allowed;
 }

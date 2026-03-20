@@ -1,23 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
-namespace FastRoute;
+declare (strict_types=1);
+namespace Fast_Route;
 
 use function assert;
-
 use Closure;
-
-use FastRoute\Cache\FileCache;
-
+use Fast_Route\Cache\File_Cache;
 use function is_string;
-
 /** @phpstan-import-type ProcessedData from ConfigureRoutes */
-final class FastRoute
+final class Fast_Route
 {
     /** @var ProcessedData|null */
-    private ?array $processedConfiguration = null;
-
+    private ?array $processed_configuration = null;
     /**
      * @param Closure(ConfigureRoutes):void  $routeDefinitionCallback
      * @param class-string<RouteParser>      $routeParser
@@ -28,159 +22,82 @@ final class FastRoute
      * @param Cache|class-string<Cache>|null $cacheDriver
      * @param non-empty-string|null          $cacheKey
      */
-    private function __construct(
-        private readonly Closure $routeDefinitionCallback,
-        private readonly string $routeParser,
-        private readonly string $dataGenerator,
-        private readonly string $dispatcher,
-        private readonly string $routesConfiguration,
-        private readonly string $uriGenerator,
-        private readonly Cache|string|null $cacheDriver,
-        private readonly ?string $cacheKey,
-    ) {
+    private function __construct(private readonly Closure $route_definition_callback, private readonly string $route_parser, private readonly string $data_generator, private readonly string $dispatcher, private readonly string $routes_configuration, private readonly string $uri_generator, private readonly Cache|string|null $cache_driver, private readonly ?string $cache_key)
+    {
     }
-
     /**
      * @param Closure(ConfigureRoutes):void $routeDefinitionCallback
      * @param non-empty-string              $cacheKey
      */
-    public static function recommendedSettings(Closure $routeDefinitionCallback, string $cacheKey): self
+    public static function recommended_settings(Closure $route_definition_callback, string $cache_key): self
     {
-        return new self(
-            $routeDefinitionCallback,
-            RouteParser\Std::class,
-            DataGenerator\MarkBased::class,
-            Dispatcher\MarkBased::class,
-            RouteCollector::class,
-            GenerateUri\FromProcessedConfiguration::class,
-            FileCache::class,
-            $cacheKey,
-        );
+        return new self($route_definition_callback, Route_Parser\Std::class, Data_Generator\Mark_Based::class, Dispatcher\Mark_Based::class, Route_Collector::class, Generate_Uri\From_Processed_Configuration::class, File_Cache::class, $cache_key);
     }
-
-    public function disableCache(): self
+    public function disable_cache(): self
     {
-        return new self(
-            $this->routeDefinitionCallback,
-            $this->routeParser,
-            $this->dataGenerator,
-            $this->dispatcher,
-            $this->routesConfiguration,
-            $this->uriGenerator,
-            null,
-            null,
-        );
+        return new self($this->route_definition_callback, $this->route_parser, $this->data_generator, $this->dispatcher, $this->routes_configuration, $this->uri_generator, null, null);
     }
-
     /**
      * @param Cache|class-string<Cache> $driver
      * @param non-empty-string          $cacheKey
      */
-    public function withCache(Cache|string $driver, string $cacheKey): self
+    public function with_cache(Cache|string $driver, string $cache_key): self
     {
-        return new self(
-            $this->routeDefinitionCallback,
-            $this->routeParser,
-            $this->dataGenerator,
-            $this->dispatcher,
-            $this->routesConfiguration,
-            $this->uriGenerator,
-            $driver,
-            $cacheKey,
-        );
+        return new self($this->route_definition_callback, $this->route_parser, $this->data_generator, $this->dispatcher, $this->routes_configuration, $this->uri_generator, $driver, $cache_key);
     }
-
-    public function useCharCountDispatcher(): self
+    public function use_char_count_dispatcher(): self
     {
-        return $this->useCustomDispatcher(DataGenerator\CharCountBased::class, Dispatcher\CharCountBased::class);
+        return $this->use_custom_dispatcher(Data_Generator\Char_Count_Based::class, Dispatcher\Char_Count_Based::class);
     }
-
-    public function useGroupCountDispatcher(): self
+    public function use_group_count_dispatcher(): self
     {
-        return $this->useCustomDispatcher(DataGenerator\GroupCountBased::class, Dispatcher\GroupCountBased::class);
+        return $this->use_custom_dispatcher(Data_Generator\Group_Count_Based::class, Dispatcher\Group_Count_Based::class);
     }
-
-    public function useGroupPosDispatcher(): self
+    public function use_group_pos_dispatcher(): self
     {
-        return $this->useCustomDispatcher(DataGenerator\GroupPosBased::class, Dispatcher\GroupPosBased::class);
+        return $this->use_custom_dispatcher(Data_Generator\Group_Pos_Based::class, Dispatcher\Group_Pos_Based::class);
     }
-
-    public function useMarkDispatcher(): self
+    public function use_mark_dispatcher(): self
     {
-        return $this->useCustomDispatcher(DataGenerator\MarkBased::class, Dispatcher\MarkBased::class);
+        return $this->use_custom_dispatcher(Data_Generator\Mark_Based::class, Dispatcher\Mark_Based::class);
     }
-
     /**
      * @param class-string<DataGenerator> $dataGenerator
      * @param class-string<Dispatcher>    $dispatcher
      */
-    public function useCustomDispatcher(string $dataGenerator, string $dispatcher): self
+    public function use_custom_dispatcher(string $data_generator, string $dispatcher): self
     {
-        return new self(
-            $this->routeDefinitionCallback,
-            $this->routeParser,
-            $dataGenerator,
-            $dispatcher,
-            $this->routesConfiguration,
-            $this->uriGenerator,
-            $this->cacheDriver,
-            $this->cacheKey,
-        );
+        return new self($this->route_definition_callback, $this->route_parser, $data_generator, $dispatcher, $this->routes_configuration, $this->uri_generator, $this->cache_driver, $this->cache_key);
     }
-
     /** @param class-string<GenerateUri> $uriGenerator */
-    public function withUriGenerator(string $uriGenerator): self
+    public function with_uri_generator(string $uri_generator): self
     {
-        return new self(
-            $this->routeDefinitionCallback,
-            $this->routeParser,
-            $this->dataGenerator,
-            $this->dispatcher,
-            $this->routesConfiguration,
-            $uriGenerator,
-            $this->cacheDriver,
-            $this->cacheKey,
-        );
+        return new self($this->route_definition_callback, $this->route_parser, $this->data_generator, $this->dispatcher, $this->routes_configuration, $uri_generator, $this->cache_driver, $this->cache_key);
     }
-
     /** @return ProcessedData */
-    private function buildConfiguration(): array
+    private function build_configuration(): array
     {
-        if ($this->processedConfiguration !== null) {
-            return $this->processedConfiguration;
+        if ($this->processed_configuration !== null) {
+            return $this->processed_configuration;
         }
-
         $loader = function (): array {
-            $configuredRoutes = new $this->routesConfiguration(
-                new $this->routeParser(),
-                new $this->dataGenerator(),
-            );
-
-            ($this->routeDefinitionCallback)($configuredRoutes);
-
-            return $configuredRoutes->processedRoutes();
+            $configured_routes = new $this->routes_configuration(new $this->route_parser(), new $this->data_generator());
+            ($this->route_definition_callback)($configured_routes);
+            return $configured_routes->processed_routes();
         };
-
-        if ($this->cacheDriver === null) {
-            return $this->processedConfiguration = $loader();
+        if ($this->cache_driver === null) {
+            return $this->processed_configuration = $loader();
         }
-
-        assert(is_string($this->cacheKey));
-
-        $cache = is_string($this->cacheDriver)
-            ? new $this->cacheDriver()
-            : $this->cacheDriver;
-
-        return $this->processedConfiguration = $cache->get($this->cacheKey, $loader);
+        assert(is_string($this->cache_key));
+        $cache = is_string($this->cache_driver) ? new $this->cache_driver() : $this->cache_driver;
+        return $this->processed_configuration = $cache->get($this->cache_key, $loader);
     }
-
     public function dispatcher(): Dispatcher
     {
-        return new $this->dispatcher($this->buildConfiguration());
+        return new $this->dispatcher($this->build_configuration());
     }
-
-    public function uriGenerator(): GenerateUri
+    public function uri_generator(): Generate_Uri
     {
-        return new $this->uriGenerator($this->buildConfiguration()[2]);
+        return new $this->uri_generator($this->build_configuration()[2]);
     }
 }

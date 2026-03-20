@@ -1,60 +1,44 @@
 <?php
 
-declare(strict_types=1);
-
-namespace FastRoute\GenerateUri;
+declare (strict_types=1);
+namespace Fast_Route\Generate_Uri;
 
 use function array_key_exists;
 use function array_keys;
-
 use function assert;
 use function count;
-
-use FastRoute\GenerateUri;
-use FastRoute\RouteParser;
-
+use Fast_Route\Generate_Uri;
+use Fast_Route\Route_Parser;
 use function is_string;
 use function preg_match;
-
 /**
  * @phpstan-import-type RoutesForUriGeneration from GenerateUri
  * @phpstan-import-type UriSubstitutions from GenerateUri
  * @phpstan-import-type ParsedRoute from RouteParser
  */
-final class FromProcessedConfiguration implements GenerateUri
+final class From_Processed_Configuration implements Generate_Uri
 {
     /** @param RoutesForUriGeneration $processedConfiguration */
-    public function __construct(private readonly array $processedConfiguration)
+    public function __construct(private readonly array $processed_configuration)
     {
     }
-
     /** @inheritDoc */
-    public function forRoute(string $name, array $substitutions = []): GeneratedUri
+    public function for_route(string $name, array $substitutions = []): Generated_Uri
     {
-        if (! array_key_exists($name, $this->processedConfiguration)) {
-            throw UriCouldNotBeGenerated::routeIsUndefined($name);
+        if (!array_key_exists($name, $this->processed_configuration)) {
+            throw Uri_Could_Not_Be_Generated::route_is_undefined($name);
         }
-
-        $missingParameters = [];
-
-        foreach ($this->processedConfiguration[$name] as $parsedRoute) {
-            $missingParameters = $this->missingParameters($parsedRoute, $substitutions);
-
+        $missing_parameters = [];
+        foreach ($this->processed_configuration[$name] as $parsed_route) {
+            $missing_parameters = $this->missing_parameters($parsed_route, $substitutions);
             // Only attempt to generate the path if we have the necessary info
-            if (count($missingParameters) === 0) {
-                return $this->generatePath($name, $parsedRoute, $substitutions);
+            if (count($missing_parameters) === 0) {
+                return $this->generate_path($name, $parsed_route, $substitutions);
             }
         }
-
-        assert(count($missingParameters) > 0);
-
-        throw UriCouldNotBeGenerated::insufficientParameters(
-            $name,
-            $missingParameters,
-            array_keys($substitutions),
-        );
+        assert(count($missing_parameters) > 0);
+        throw Uri_Could_Not_Be_Generated::insufficient_parameters($name, $missing_parameters, array_keys($substitutions));
     }
-
     /**
      * Returns the expected parameters that were not passed as substitutions
      *
@@ -63,10 +47,9 @@ final class FromProcessedConfiguration implements GenerateUri
      *
      * @return list<string>
      */
-    private function missingParameters(array $parts, array $substitutions): array
+    private function missing_parameters(array $parts, array $substitutions): array
     {
-        $missingParameters = [];
-
+        $missing_parameters = [];
         foreach ($parts as $part) {
             if (is_string($part)) {
                 continue;
@@ -74,39 +57,30 @@ final class FromProcessedConfiguration implements GenerateUri
             if (array_key_exists($part[0], $substitutions)) {
                 continue;
             }
-            $missingParameters[] = $part[0];
+            $missing_parameters[] = $part[0];
         }
-
-        return $missingParameters;
+        return $missing_parameters;
     }
-
     /**
      * @param ParsedRoute      $parsedRoute
      * @param UriSubstitutions $substitutions
      */
-    private function generatePath(string $route, array $parsedRoute, array $substitutions): GeneratedUri
+    private function generate_path(string $route, array $parsed_route, array $substitutions): Generated_Uri
     {
         $path = '';
-
-        foreach ($parsedRoute as $part) {
+        foreach ($parsed_route as $part) {
             if (is_string($part)) {
                 $path .= $part;
-
                 continue;
             }
-
-            [$parameterName, $regex] = $part;
-
-            if (preg_match('~^' . $regex . '$~u', $substitutions[$parameterName]) !== 1) {
-                throw UriCouldNotBeGenerated::parameterDoesNotMatchThePattern($route, $parameterName, $regex);
+            [$parameter_name, $regex] = $part;
+            if (preg_match('~^' . $regex . '$~u', $substitutions[$parameter_name]) !== 1) {
+                throw Uri_Could_Not_Be_Generated::parameter_does_not_match_the_pattern($route, $parameter_name, $regex);
             }
-
-            $path .= $substitutions[$parameterName];
-            unset($substitutions[$parameterName]);
+            $path .= $substitutions[$parameter_name];
+            unset($substitutions[$parameter_name]);
         }
-
         assert($path !== '');
-
-        return new GeneratedUri($path, $substitutions);
+        return new Generated_Uri($path, $substitutions);
     }
 }

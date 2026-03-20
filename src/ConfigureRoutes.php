@@ -1,8 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
-namespace FastRoute;
+declare (strict_types=1);
+namespace Fast_Route;
 
 /**
  * @phpstan-import-type StaticRoutes from DataGenerator
@@ -11,11 +10,10 @@ namespace FastRoute;
  * @phpstan-import-type RoutesForUriGeneration from GenerateUri
  * @phpstan-type ProcessedData array{StaticRoutes, DynamicRoutes, RoutesForUriGeneration}
  */
-interface ConfigureRoutes
+interface Configure_Routes
 {
     public const ROUTE_NAME = '_name';
     public const ROUTE_REGEX = '_route';
-
     /**
      * Registers a new route.
      *
@@ -24,15 +22,13 @@ interface ConfigureRoutes
      * @param string|string[] $httpMethod
      * @param ExtraParameters $extraParameters
      */
-    public function addRoute(string|array $httpMethod, string $route, mixed $handler, array $extraParameters = []): void;
-
+    public function add_route(string|array $http_method, string $route, mixed $handler, array $extra_parameters = []): void;
     /**
      * Create a route group with a common prefix.
      *
      * All routes created by the passed callback will have the given group prefix prepended.
      */
-    public function addGroup(string $prefix, callable $callback): void;
-
+    public function add_group(string $prefix, callable $callback): void;
     /**
      * Adds a fallback route to the collection
      *
@@ -40,8 +36,7 @@ interface ConfigureRoutes
      *
      * @param ExtraParameters $extraParameters
      */
-    public function any(string $route, mixed $handler, array $extraParameters = []): void;
-
+    public function any(string $route, mixed $handler, array $extra_parameters = []): void;
     /**
      * Adds a GET route to the collection
      *
@@ -49,8 +44,7 @@ interface ConfigureRoutes
      *
      * @param ExtraParameters $extraParameters
      */
-    public function get(string $route, mixed $handler, array $extraParameters = []): void;
-
+    public function get(string $route, mixed $handler, array $extra_parameters = []): void;
     /**
      * Adds a POST route to the collection
      *
@@ -58,8 +52,7 @@ interface ConfigureRoutes
      *
      * @param ExtraParameters $extraParameters
      */
-    public function post(string $route, mixed $handler, array $extraParameters = []): void;
-
+    public function post(string $route, mixed $handler, array $extra_parameters = []): void;
     /**
      * Adds a PUT route to the collection
      *
@@ -67,8 +60,7 @@ interface ConfigureRoutes
      *
      * @param ExtraParameters $extraParameters
      */
-    public function put(string $route, mixed $handler, array $extraParameters = []): void;
-
+    public function put(string $route, mixed $handler, array $extra_parameters = []): void;
     /**
      * Adds a DELETE route to the collection
      *
@@ -76,8 +68,7 @@ interface ConfigureRoutes
      *
      * @param ExtraParameters $extraParameters
      */
-    public function delete(string $route, mixed $handler, array $extraParameters = []): void;
-
+    public function delete(string $route, mixed $handler, array $extra_parameters = []): void;
     /**
      * Adds a PATCH route to the collection
      *
@@ -85,8 +76,7 @@ interface ConfigureRoutes
      *
      * @param ExtraParameters $extraParameters
      */
-    public function patch(string $route, mixed $handler, array $extraParameters = []): void;
-
+    public function patch(string $route, mixed $handler, array $extra_parameters = []): void;
     /**
      * Adds a HEAD route to the collection
      *
@@ -94,8 +84,7 @@ interface ConfigureRoutes
      *
      * @param ExtraParameters $extraParameters
      */
-    public function head(string $route, mixed $handler, array $extraParameters = []): void;
-
+    public function head(string $route, mixed $handler, array $extra_parameters = []): void;
     /**
      * Adds an OPTIONS route to the collection
      *
@@ -103,12 +92,11 @@ interface ConfigureRoutes
      *
      * @param ExtraParameters $extraParameters
      */
-    public function options(string $route, mixed $handler, array $extraParameters = []): void;
-
+    public function options(string $route, mixed $handler, array $extra_parameters = []): void;
     /**
      * Returns the processed aggregated route data.
      *
      * @return ProcessedData
      */
-    public function processedRoutes(): array;
+    public function processed_routes(): array;
 }

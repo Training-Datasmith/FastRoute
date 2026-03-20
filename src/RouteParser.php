@@ -1,14 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
-namespace FastRoute;
+declare (strict_types=1);
+namespace Fast_Route;
 
 /**
  * @phpstan-type ParsedRoute array<string|array{string, string}>
  * @phpstan-type ParsedRoutes list<ParsedRoute>
  */
-interface RouteParser
+interface Route_Parser
 {
     /**
      * Parses a route string into multiple route data arrays.

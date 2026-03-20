@@ -1,39 +1,32 @@
 <?php
 
-declare(strict_types=1);
-
-namespace FastRoute\DataGenerator;
+declare (strict_types=1);
+namespace Fast_Route\Data_Generator;
 
 use function count;
 use function implode;
-
 /** @final */
-class CharCountBased extends RegexBasedAbstract
+class Char_Count_Based extends Regex_Based_Abstract
 {
-    protected function getApproxChunkSize(): int
+    protected function get_approx_chunk_size(): int
     {
         return 30;
     }
-
     /** @inheritDoc */
-    protected function processChunk(array $regexToRoutesMap): array
+    protected function process_chunk(array $regex_to_routes_map): array
     {
-        $routeMap = [];
+        $route_map = [];
         $regexes = [];
-
-        $suffixLen = 0;
+        $suffix_len = 0;
         $suffix = '';
-        $count = count($regexToRoutesMap);
-        foreach ($regexToRoutesMap as $regex => $route) {
-            $suffixLen++;
+        $count = count($regex_to_routes_map);
+        foreach ($regex_to_routes_map as $regex => $route) {
+            $suffix_len++;
             $suffix .= "\t";
-
-            $regexes[] = '(?:' . $regex . '/(\t{' . $suffixLen . '})\t{' . ($count - $suffixLen) . '})';
-            $routeMap[$suffix] = [$route->handler, $route->variables, $route->extraParameters];
+            $regexes[] = '(?:' . $regex . '/(\t{' . $suffix_len . '})\t{' . ($count - $suffix_len) . '})';
+            $route_map[$suffix] = [$route->handler, $route->variables, $route->extra_parameters];
         }
-
         $regex = '~^(?|' . implode('|', $regexes) . ')$~';
-
-        return ['regex' => $regex, 'suffix' => '/' . $suffix, 'routeMap' => $routeMap];
+        return ['regex' => $regex, 'suffix' => '/' . $suffix, 'routeMap' => $route_map];
     }
 }
